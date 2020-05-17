@@ -6,7 +6,7 @@
 
 WHITESPACE = _{ " " | "\t" }
 
-file     = _{ (line ~ NEWLINE)* ~ EOI }
+file     = _{ (line ~ NEWLINE)* ~ (line ~ !NEWLINE)? ~ EOI }
 comment  = _{ "(" ~ (!")" ~ !NEWLINE ~ ANY)* ~ ")" | ";" ~ (!NEWLINE ~ ANY)* }
 line     =  { blockdel? ~ comment* ~ (word | word_flag | par_assign)* }
 blockdel =  { "/" }
