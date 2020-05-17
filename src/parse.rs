@@ -197,11 +197,29 @@ fn make_word(pairs: Pairs<Rule>) -> ParseResult<Option<Word>> {
     }
 }
 
+fn make_word_flag(letter: Pairs<Rule>) -> ParseResult<Option<Word>> {
+    match letter.as_str() {
+        "a" | "A" => Ok(Some(Word::Flag(Arg::AxisA))),
+        "b" | "B" => Ok(Some(Word::Flag(Arg::AxisB))),
+        "c" | "C" => Ok(Some(Word::Flag(Arg::AxisC))),
+        "u" | "U" => Ok(Some(Word::Flag(Arg::AxisU))),
+        "v" | "V" => Ok(Some(Word::Flag(Arg::AxisV))),
+        "w" | "W" => Ok(Some(Word::Flag(Arg::AxisW))),
+        "x" | "X" => Ok(Some(Word::Flag(Arg::AxisX))),
+        "y" | "Y" => Ok(Some(Word::Flag(Arg::AxisY))),
+        "z" | "Z" => Ok(Some(Word::Flag(Arg::AxisZ))),
+        _ => unreachable!(),
+    }
+}
+
 fn make_block(lineno: usize, pairs: Pairs<Rule>) -> ParseResult<Option<Block>> {
     let mut block = Block { lineno, ..Block::default() };
     for pair in pairs {
         match pair.as_rule() {
             Rule::word => if let Some(word) = make_word(pair.into_inner())? {
+                block.words.push(word);
+            }
+            Rule::word_flag => if let Some(word) = make_word_flag(pair.into_inner())? {
                 block.words.push(word);
             }
             Rule::par_assign => {

@@ -88,6 +88,7 @@ pub enum Word {
     Spindle(Expr),
     Tool(Expr),
     Arg(Arg, Expr),
+    Flag(Arg),
 }
 
 /// The binary operators known to G-code.
@@ -283,6 +284,7 @@ impl Display for Word {
             Word::Spindle(n) => { f.write_str("S")?; wrap_op(f, n) },
             Word::Tool(n)    => { f.write_str("T")?; wrap_op(f, n) },
             Word::Arg(a, n)  => { Display::fmt(a, f)?; wrap_op(f, n) },
+            Word::Flag(a) => Display::fmt(a, f),
         }
     }
 }

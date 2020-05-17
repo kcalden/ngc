@@ -8,12 +8,13 @@ WHITESPACE = _{ " " | "\t" }
 
 file     = _{ (line ~ NEWLINE)* ~ EOI }
 comment  = _{ "(" ~ (!")" ~ !NEWLINE ~ ANY)* ~ ")" | ";" ~ (!NEWLINE ~ ANY)* }
-line     =  { blockdel? ~ comment* ~ (word | par_assign)* }
+line     =  { blockdel? ~ comment* ~ (word | word_flag | par_assign)* }
 blockdel =  { "/" }
 
 // argument word syntax
 
 word   =  { letter ~ value ~ comment* }
+word_flag = {letter ~ !value ~ comment*}
 letter =  { ASCII_ALPHA }
 value  =  { op_un* ~ (num | par_ref | expr_brack | expr_atan | expr_exist | expr_call) }
 num    =  { (ASCII_DIGIT+ ~ ("." ~ ASCII_DIGIT*)? | "." ~ ASCII_DIGIT+) }
